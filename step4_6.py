@@ -61,6 +61,7 @@ def step_4_to_6(regionName,
     # 4.4
     inFeatures = "DZT_difang_90s.shp"
     outFeatures = "Export_Output_DZT.shp"
+    # deleteIfExist(outFeatures)
     arcpy.Select_analysis(in_features = inFeatures, 
                         out_feature_class = outFeatures, 
                         where_clause = "等级值<>0")
@@ -113,10 +114,15 @@ def step_4_to_6(regionName,
     # same as 4.6
     tab1 = "difang_90s.shp"
     tab2 = out_tab
-    arcpy.JoinField_management(in_data = tab1, 
-                            in_field = "编号", 
-                            join_table = tab2, 
-                            join_field = "编号", 
+    '''
+    Recover "difang_90s.shp", to that generated in step 3.4 and 3.5. 
+    Because in the previous small loop, it is changed by step 4.9's JoinField_management.
+    '''
+    arcpy.DeleteField_management(tab1, "djz_zb;等级")
+    arcpy.JoinField_management(in_data = tab1,
+                            in_field = "编号",
+                            join_table = tab2,
+                            join_field = "编号",
                             fields = ["djz_zb"])
     rp(4.9)
 
@@ -126,11 +132,11 @@ def step_4_to_6(regionName,
     newField = "等级"
     newType = "SHORT"
     arcpy.DeleteField_management(shp, newField)
-    arcpy.AddField_management(in_table = shp, 
-                            field_name = newField, 
+    arcpy.AddField_management(in_table = shp,
+                            field_name = newField,
                             field_type = newType)
-    arcpy.CalculateField_management(in_table = shp, field = newField, 
-                                    expression = "!djz_zb!", 
+    arcpy.CalculateField_management(in_table = shp, field = newField,
+                                    expression = "!djz_zb!",
                                     expression_type = "PYTHON")
     rp(4.10)
 
@@ -142,10 +148,10 @@ def step_4_to_6(regionName,
     joinFeatures = "difang_90s.shp"
     outFeatures = "DZT_30s_xxLevel.shp" # name "DZFZT(30s, xxLevel)" output errors?
     deleteIfExist(outFeatures)
-    arcpy.SpatialJoin_analysis(target_features = targetFeatures, 
-                            join_features = joinFeatures, 
-                            out_feature_class = outFeatures, 
-                            join_operation = "JOIN_ONE_TO_ONE", 
+    arcpy.SpatialJoin_analysis(target_features = targetFeatures,
+                            join_features = joinFeatures,
+                            out_feature_class = outFeatures,
+                            join_operation = "JOIN_ONE_TO_ONE",
                             join_type = "KEEP_ALL")
     rp(5.1)
 
@@ -153,64 +159,64 @@ def step_4_to_6(regionName,
     # 添加字段
     shp = "DZT_30s_xxLevel.shp"
     arcpy.DeleteField_management(shp, "乡")
-    fieldsInfo = [("物理主", "TEXT"), ("调查对", "TEXT"), ("行省", "TEXT"), ("行市", "TEXT"), 
-                ("行县", "TEXT"), ("更时", "TEXT"), ("写时", "TEXT"), ("数据状", "TEXT"), 
-                ("审核流", "TEXT"), ("审核状", "TEXT"), ("行业", "TEXT"), ("日期分", "TEXT"), 
+    fieldsInfo = [("物理主", "TEXT"), ("调查对", "TEXT"), ("行省", "TEXT"), ("行市", "TEXT"),
+                ("行县", "TEXT"), ("更时", "TEXT"), ("写时", "TEXT"), ("数据状", "TEXT"),
+                ("审核流", "TEXT"), ("审核状", "TEXT"), ("行业", "TEXT"), ("日期分", "TEXT"),
                 ("批次号", "TEXT"), ("乡", "TEXT"), ("等级值", "SHORT")]
     # u'\u4e61' 乡
     for fname, ftype in fieldsInfo:
-        arcpy.AddField_management(in_table = shp, 
-                                field_name = fname, 
+        arcpy.AddField_management(in_table = shp,
+                                field_name = fname,
                                 field_type = ftype)
     rp(6.1)
 
     # 6.2
-    arcpy.CalculateField_management(shp, "乡", 
+    arcpy.CalculateField_management(shp, "乡",
                                     "[area_code]")
-    arcpy.CalculateField_management(shp, "行省", 
+    arcpy.CalculateField_management(shp, "行省",
                                     "\"140000\"")
-    arcpy.CalculateField_management(shp, "行市", 
+    arcpy.CalculateField_management(shp, "行市",
                                     "Left([乡], 4) & \"00\"")
-    arcpy.CalculateField_management(shp, "行县", 
+    arcpy.CalculateField_management(shp, "行县",
                                     "Left([乡], 6)")
-    arcpy.CalculateField_management(shp, "更时", 
+    arcpy.CalculateField_management(shp, "更时",
                                     "\"20221021 11:00:00\"")
-    arcpy.CalculateField_management(shp, "数据状", 
+    arcpy.CalculateField_management(shp, "数据状",
                                     "\"U\"")
-    arcpy.CalculateField_management(shp, "审核流", 
+    arcpy.CalculateField_management(shp, "审核流",
                                     "\"3\"")
-    arcpy.CalculateField_management(shp, "审核状", 
+    arcpy.CalculateField_management(shp, "审核状",
                                     "\"2\"")
-    arcpy.CalculateField_management(shp, "行业", 
+    arcpy.CalculateField_management(shp, "行业",
                                     "\"019\"")
-    arcpy.CalculateField_management(shp, "等级值", 
+    arcpy.CalculateField_management(shp, "等级值",
                                     "[等级]")
     for name in ["调查对", "写时", "日期分", "批次号"]:
         arcpy.CalculateField_management(shp, name, "\"\"")
     rp(6.2)
 
     # 6.3
-    # 计算物理主键. 6位行政编码 + 第i张图 + 图内编号  
+    # 计算物理主键. 6位行政编码 + 第i张图 + 图内编号
     # 例如: 140100 + 1 + 12
     expression = "!行县! + \"" + str(figID) + "\" + str(!FID!)"
-    arcpy.CalculateField_management(shp, "物理主", 
-                                    expression, 
+    arcpy.CalculateField_management(shp, "物理主",
+                                    expression,
                                     "PYTHON")
     rp(6.3)
 
     # 6.4
     # 删除多余字段
-    delFields = ["Join_Count", "TARGET_FID", "oid_1", 
-                "rows", "colums", "area_code", "ORIG_FID", 
-                "Shape_Length_1", "Shape_Area_1", "编号", 
+    delFields = ["Join_Count", "TARGET_FID", "oid_1",
+                "rows", "colums", "area_code", "ORIG_FID",
+                "Shape_Length_1", "Shape_Area_1", "编号",
                 "FREQUENCY", "djz_zb", "等级", "Id"]
     # delete in batch
-    arcpy.DeleteField_management(in_table = shp, 
-                                drop_field = ";".join(delFields)) 
+    arcpy.DeleteField_management(in_table = shp,
+                                drop_field = ";".join(delFields))
     rp(6.4)
 
     # % [markdown]
-    # ### 6.5 
+    # ### 6.5
     # 调整字段顺序
 
     # %
@@ -220,7 +226,7 @@ def step_4_to_6(regionName,
 
     # %
     arcpy.CopyFeatures_management(shp, "tmp.shp")
-    reorder_fields(table = "tmp.shp", out_table = shp, 
+    reorder_fields(table = "tmp.shp", out_table = shp,
                 field_order = fieldOrder)
     rp(6.5)
 
@@ -234,7 +240,7 @@ def step_4_to_6(regionName,
 
     # 7.2
     # 保存, 并按要求命名
-    
+
     inFeatures = "DZT_30s_xxLevel.shp"
     outFeatures = figName + "_山西省" + "".join(regionName.split('-')) + ".shp"
     outFeatures = unicode(outFeatures, 'utf-8')

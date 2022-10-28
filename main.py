@@ -4,9 +4,8 @@ gwData = "D:\\COURSES\\ADAS_intern\\gw_data\\gw.shp"
 sourceDataPath = "D:\\COURSES\\ADAS_intern\\20221025山西地质数据"
 default_gdbPath = "C:\\Users\\lx\\Documents\\ArcGIS\\Default.gdb"
 savePath = "D:\\GisData"
-start_id = 13-2
-end_id = 27-1
-
+start_id = 4-2
+end_id = 6-1
 
 
 # %%
