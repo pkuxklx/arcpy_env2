@@ -33,10 +33,18 @@ def step_4_to_6(regionName,
         print("Successfully find the data file " + sourceData + ".")
 
 
-    # 4.1
+    # 4.0
     arcpy.CopyFeatures_management(in_features = "difang_90s_ori.shp", out_feature_class = "difang_90s.shp")
     coor = arcpy.SpatialReference(4508)
     arcpy.DefineProjection_management(sourceData, coor)
+    arcpy.CalculateField_management(in_table = sourceData, field = "等级值",
+                                    expression = "int(!等级值!)",
+                                    expression_type = "PYTHON")
+    # arcpy.AlterField_management(in_table = sourceData, field = "等级值",
+    #                             new_field_name = "等级值", field_type = "LONG")
+    rp(4.0)
+
+    # 4.1
     inFeatures = ["difang_90s.shp", sourceData]
     outFeatures = "DZT_difang_90s_mlt.shp" # DZT = 地质图
     arcpy.Union_analysis(inFeatures, outFeatures) # 4.1
@@ -53,7 +61,6 @@ def step_4_to_6(regionName,
     shp = "DZT_difang_90s.shp"
     newField = "dz_mj"
     newType = "DOUBLE"
-
     arcpy.AddField_management(in_table = shp, 
                             field_name = newField, 
                             field_type = newType)
