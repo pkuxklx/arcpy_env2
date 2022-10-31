@@ -66,6 +66,11 @@ for regionName, areaCode in areas:
                 gwData = gwData)
     
     for figID in [1, 2, 3]:
+
+        # tmp
+        if figID == 1:
+            continue
+
         printSepLine()
         print(regionName + " " + str(figID) + " step 4~7 start.")
 

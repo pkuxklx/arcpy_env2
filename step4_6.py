@@ -33,15 +33,24 @@ def step_4_to_6(regionName,
         print("Successfully find the data file " + sourceData + ".")
 
 
-    # 4.0
+    # 4.0.1
     arcpy.CopyFeatures_management(in_features = "difang_90s_ori.shp", out_feature_class = "difang_90s.shp")
     coor = arcpy.SpatialReference(4508)
     arcpy.DefineProjection_management(sourceData, coor)
-    arcpy.CalculateField_management(in_table = sourceData, field = "等级值",
-                                    expression = "int(!等级值!)",
-                                    expression_type = "PYTHON")
-    # arcpy.AlterField_management(in_table = sourceData, field = "等级值",
-    #                             new_field_name = "等级值", field_type = "LONG")
+
+    # 4.0.2
+    # in case type('等级值') = 'TEXT'
+    arcpy.DeleteField_management(sourceData, 'tmp')
+    arcpy.AddField_management(sourceData, "tmp", "LONG")
+    arcpy.CalculateField_management(sourceData, 'tmp', 'int([等级值])')
+    arcpy.DeleteField_management(sourceData, '等级值')
+    arcpy.AddField_management(sourceData, '等级值', 'LONG')
+    arcpy.CalculateField_management(sourceData, '等级值', '[tmp]')
+    arcpy.DeleteField_management(sourceData, 'tmp')
+    # arcpy.CalculateField_management(in_table = )
+    # arcpy.CalculateField_management(in_table = sourceData, field = "等级值",
+    #                                 expression = "int(!等级值!)",
+    #                                 expression_type = "PYTHON")
     rp(4.0)
 
     # 4.1
