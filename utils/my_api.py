@@ -47,12 +47,14 @@ def deleteIfExist(features, dele = True, verbose = 0):
             print("Doesn't exist.")
         
         
-def getFieldList(features):
+def getFieldList(features, getVal = False):
     print(features)
     printSepLine()
+    ans = []
     for x in arcpy.ListFields(dataset = features):
         print x.name
         print(x.required, x.type)
+        ans
     # return [{"name": x.name, "type": x.type, "required": x.required} for x in arcpy.ListFields(dataset = features)]
 
 

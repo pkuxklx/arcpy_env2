@@ -35,6 +35,8 @@ def step_4_to_6(regionName,
 
     # 4.1
     arcpy.CopyFeatures_management(in_features = "difang_90s_ori.shp", out_feature_class = "difang_90s.shp")
+    coor = arcpy.SpatialReference(4508)
+    arcpy.DefineProjection_management(sourceData, coor)
     inFeatures = ["difang_90s.shp", sourceData]
     outFeatures = "DZT_difang_90s_mlt.shp" # DZT = 地质图
     arcpy.Union_analysis(inFeatures, outFeatures) # 4.1

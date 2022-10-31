@@ -4,8 +4,8 @@ gwData = "D:\\COURSES\\ADAS_intern\\gw数据\\gw.shp"
 sourceDataPath = "D:\\COURSES\\ADAS_intern\\20221025山西地质数据\\吕梁市及13个区县"
 default_gdbPath = "C:\\Users\\lx\\Documents\\ArcGIS\\Default.gdb"
 savePath = "D:\\GisData结果"
-start_id = 116-2
-end_id = 129-1
+start_id = 117-2
+end_id = 117-1
 
 
 # %%
