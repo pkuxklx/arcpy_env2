@@ -5,7 +5,7 @@ sourceDataPath = "D:\\COURSES\\ADAS_intern\\20221025山西地质数据\\吕梁�
 default_gdbPath = "C:\\Users\\lx\\Documents\\ArcGIS\\Default.gdb"
 savePath = "D:\\GisData结果"
 start_id = 116-2
-end_id = 116-1
+end_id = 129-1
 
 
 # %%

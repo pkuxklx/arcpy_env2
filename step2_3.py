@@ -59,14 +59,14 @@ def step_2_to_3(regionName,
     # 3.5
     # similar as 4.2
     inFeatures = "difang_90s_mlt.shp"
-    outFeatures = "difang_90s.shp"
+    outFeatures = "difang_90s_ori.shp"
     deleteIfExist(outFeatures)
     arcpy.MultipartToSinglepart_management(in_features = inFeatures, 
                                         out_feature_class = outFeatures)
     rp(3.5)
 
     # 3.6
-    shp = "difang_90s.shp"
+    shp = "difang_90s_ori.shp"
     newField = "编号"
     newType = "SHORT"
     arcpy.AddField_management(in_table = shp, 

@@ -32,7 +32,9 @@ def step_4_to_6(regionName,
     else:
         print("Successfully find the data file " + sourceData + ".")
 
+
     # 4.1
+    arcpy.CopyFeatures_management(in_features = "difang_90s_ori.shp", out_feature_class = "difang_90s.shp")
     inFeatures = ["difang_90s.shp", sourceData]
     outFeatures = "DZT_difang_90s_mlt.shp" # DZT = 地质图
     arcpy.Union_analysis(inFeatures, outFeatures) # 4.1
@@ -114,11 +116,9 @@ def step_4_to_6(regionName,
     # same as 4.6
     tab1 = "difang_90s.shp"
     tab2 = out_tab
-    '''
-    Recover "difang_90s.shp", to that generated in step 3.4 and 3.5. 
-    Because in the previous small loop, it is changed by step 4.9's JoinField_management.
-    '''
-    arcpy.DeleteField_management(tab1, "djz_zb;等级")
+    # Recover "difang_90s.shp", to that generated in step 3.4 and 3.5.
+    # Because in the previous small loop, it is changed by step 4.9's JoinField_management.
+    # arcpy.DeleteField_management(tab1, "djz_zb;等级")
     arcpy.JoinField_management(in_data = tab1,
                             in_field = "编号",
                             join_table = tab2,
