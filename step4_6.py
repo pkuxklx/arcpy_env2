@@ -183,8 +183,9 @@ def step_4_to_6(regionName,
                                     "\"20221021 11:00:00\"")
     arcpy.CalculateField_management(shp, "数据状",
                                     "\"U\"")
+    level = regionName.count('-') + 2 # {2, 3}
     arcpy.CalculateField_management(shp, "审核流",
-                                    "\"3\"")
+                                    "\"" + str(level) + "\"")
     arcpy.CalculateField_management(shp, "审核状",
                                     "\"2\"")
     arcpy.CalculateField_management(shp, "行业",

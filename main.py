@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-  
-scratchPath = "D:\\GisData\\tmp"
-gwData = "D:\\COURSES\\ADAS_intern\\gw_data\\gw.shp"
-sourceDataPath = "D:\\COURSES\\ADAS_intern\\20221025山西地质数据"
+scratchPath = "D:\\GisData结果\\暂时"
+gwData = "D:\\COURSES\\ADAS_intern\\gw数据\\gw.shp"
+sourceDataPath = "D:\\COURSES\\ADAS_intern\\20221025山西地质数据\\吕梁市及13个区县"
 default_gdbPath = "C:\\Users\\lx\\Documents\\ArcGIS\\Default.gdb"
-savePath = "D:\\GisData"
-start_id = 4-2
-end_id = 6-1
+savePath = "D:\\GisData结果"
+start_id = 116-2
+end_id = 116-1
 
 
 # %%
@@ -54,6 +54,7 @@ geoType = "POLYGON"
 
 # %%
 areas = areas[start_id: end_id]
+err_infos = []
 ta = Timer()
 for regionName, areaCode in areas:
     printSepLine(2)
@@ -79,9 +80,15 @@ for regionName, areaCode in areas:
             print(regionName + " Fig {} finished.".format(figID))
         except Exception as e:
             print(e.message + " Continue.")
+            err_infos.append([regionName, figID, e.message])
     print(regionName + " finished.")
     ta.tk()
 
+printSepLine(5)
+for info in err_infos:
+    printSepLine()
+    for val in info:
+        print(val)
 
 # %% [markdown]
 # # ----------------------------------------------------------------------------TEST

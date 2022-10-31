@@ -10,7 +10,8 @@ class InitPath(object):
         return cls._instance
     
     def __init__(self, scratch_path, gdb_name = "Scratch"):
-        # create folder 
+        # create folder
+        scratch_path = unicode(scratch_path, 'utf-8')
         try: 
             if not os.path.isdir(scratch_path):
                 os.makedirs(scratch_path)
