@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-  
 scratchPath = "D:\\GisData结果\\暂时"
 gwData = "D:\\COURSES\\ADAS_intern\\gw数据\\gw.shp"
-sourceDataPath = "D:\\COURSES\\ADAS_intern\\20221025山西地质数据\\吕梁市及13个区县"
+sourceDataPath = "D:\\COURSES\\ADAS_intern\\20221025山西地质数据"
 default_gdbPath = "C:\\Users\\lx\\Documents\\ArcGIS\\Default.gdb"
 savePath = "D:\\GisData结果"
-start_id = 117-2
-end_id = 117-1
+start_id = 44-2
+end_id = 44-1
 
 
 # %%
@@ -68,8 +68,8 @@ for regionName, areaCode in areas:
     for figID in [1, 2, 3]:
 
         # tmp
-        if figID == 1:
-            continue
+        # if figID == 1:
+        #     continue
 
         printSepLine()
         print(regionName + " " + str(figID) + " step 4~7 start.")

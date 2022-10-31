@@ -34,6 +34,7 @@ def step_4_to_6(regionName,
 
 
     # 4.0.1
+    # set coordinate for sourceData
     arcpy.CopyFeatures_management(in_features = "difang_90s_ori.shp", out_feature_class = "difang_90s.shp")
     coor = arcpy.SpatialReference(4508)
     arcpy.DefineProjection_management(sourceData, coor)
